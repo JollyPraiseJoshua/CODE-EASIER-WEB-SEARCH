@@ -1,0 +1,34 @@
+
+name: Deploy CODE EASIER search function
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "supabase/functions/code-easier-web-search/**"
+      - ".github/workflows/deploy-search-function.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy existing search function
+        run: supabase functions deploy code-easier-web-search --project-ref "$SUPABASE_PROJECT_ID"
