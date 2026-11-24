@@ -1,4 +1,4 @@
-
+# Trigger deployment workflow
 name: Deploy CODE EASIER search function
 
 on:
